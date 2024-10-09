@@ -1,27 +1,25 @@
-terraform {
-  required_providers {
-    tls = {
-      source = "hashicorp/tls"
-    }
-    local={
-      source = "hashicorp/local"
-    }
-  }
+module "key1" {
+  source   = "./tls_key_module"
+  name = "key1"
 }
 
-resource "tls_private_key" "key1" {
-  algorithm = "RSA"
-  rsa_bits = 4096
+module "key2" {
+  source   = "./tls_key_module"
+  name = "key2"
 }
-resource "local_file" "pk1" {
-  filename = "pk1.pem"
-  content = tls_private_key.key1.private_key_pem
+
+output "fp1" {
+  value = module.key1.key_fingerprint
 }
-resource "tls_private_key" "key2" {
-  algorithm = "RSA"
-  rsa_bits = 4096
+
+output "fp2" {
+  value = module.key2.key_fingerprint
 }
-resource "local_file" "pk2" {
-  filename = "pk2.pem"
-  content = tls_private_key.key2.private_key_pem
+
+output "fp" {
+  value = {
+    key1 = module.key1.key_fingerprint
+    key2 = module.key2.key_fingerprint
+  }
+  
 }

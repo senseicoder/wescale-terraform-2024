@@ -1,5 +1,5 @@
 variable "population" {
   type = number
-  default = 2
+  default = 5
   description = "Number of people to get"
 }
